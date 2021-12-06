@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tarefa 22</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- <h1>{{a}}</h1> -->
+        <form v-if="!pesquisa && !criarPerfil && !deletarPerfil" action="">
+            <button type="button" v-if="!pesquisa && !criarPerfil && !deletarPerfil" @click="criarPerfil = true;">Novo perfil</button>
+            <button type="button" v-if="!pesquisa && !criarPerfil && !deletarPerfil" :disabled="idPessoa==-1" @click="deletaPessoa">Deletar este perfil</button>
+            <select name="idPessoa" v-model="idPessoa">
+                <option value="-1" selected disabled>---Selecione uma pessoa---</option>
+                <option v-for="(pessoa, index) in pessoas" :key="index" :value="pessoa.id">{{ pessoa.nome }} {{
+                    pessoa.sobrenome }}
+                </option>
+            </select>
+            <button type="button" :disabled="idPessoa == -1" @click="carregaPessoas" class="ver">Ver</button>
+        </form>
+
+
+        <div id="VerPerfil" v-if="pesquisa && !criarPerfil && !deletarPerfil" style="width:300px; margin: 0 auto;">
+            <h2>{{ pessoa.nome }} {{ pessoa.sobrenome }}</h2>
+            <img style="width:300px;" :src="pessoa.imagem">
+            <button @click="pesquisa=false; idPessoa=-1;">Retornar</button>
+        </div>
+
+
+
+
+        <div v-if="criarPerfil && !pesquisa && !deletarPerfil" id="CriarPerfil">
+            <form action="http://127.0.0.1:8000/api/pessoas" method="POST">
+                <input type="text" name="nome" id="nome" placeholder="nome" /><br>
+                <input type="text" name="sobrenome" id="sobrenome" placeholder="sobrenome" />
+                <input type="text" name="imagem" id="imagem" placeholder="foto (URL)" />
+                <button>Criar</button><br>
+            </form>
+            <button @click="pesquisa=false; criarPerfil=false; idPessoa=-1;">Retornar</button>
+
+        </div>
+
+
+        <div v-if="deletarPerfil" id="deletarPerfil">
+            <form method="post">
+                <select name="id" v-model="idPessoa">
+                    <option value="-1" selected disabled>---Selecione uma pessoa---</option>
+                    <option v-for="(pessoa, index) in pessoas" :key="index" :value="pessoa.id">{{ pessoa.nome }} {{
+                        pessoa.sobrenome}}
+                    </option>
+                </select>
+                <button type="button" :disabled="idPessoa == -1" @click="deletaPessoa" class="ver">Deletar
+                    perfil</button>
+            </form>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+
+    <script src="script.js"></script>
+</body>
+
+</html>
